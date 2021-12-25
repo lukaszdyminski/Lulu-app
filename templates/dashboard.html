@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - Twój profil{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    <h2 class="story-header">Witaj na swoim profilu!</h2>
+
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="form-error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="subsite-description">
+        <h4>Możesz napisać swoją opowieść o Lulu <a href="{% url 'create_logged_lulu_story' %}">TUTAJ</a>.</h4>
+        <h4>Możesz napisać opowieść o swoim zwierzaku <a href="{% url 'create_logged_pet_story' %}">TUTAJ</a>.</h4>
+    </div>
+
+
+    {% if all_posts %}
+        {% for post in all_posts %}
+            <div class="dashboard-post-list">
+                <div class="stories-list">
+                    {% if post.pet_name %}
+                        <p>{{ forloop.counter }}. <a href="{{ post.get_absolute_url }}">
+                        "{{ post.title|upper}}" --- imię zwierzaka: {{ post.pet_name|upper }} ---
+                        opublikowana dnia {{ post.publ_date }}</a></p>
+                    {% else %}
+                        <p>{{ forloop.counter }}. <a href="{{ post.get_absolute_url }}">
+                        "{{ post.title|upper}}" --- imię zwierzaka: LULU ---
+                        opublikowana dnia {{ post.publ_date }}</a></p>
+                    {% endif %}
+                </div>
+                <div class="post-edit-delete">
+                    {% if post.pet_name %}
+                        <a href="{% url 'edit_pet_story' pk=post.pk %}"><i class="fa fa-pencil fa-fw"></i>Edytuj</a>
+                        <a href="{% url 'delete_pet_story' pk=post.pk %}"><i class="fa fa-trash-o fa-fw"></i>Usuń</a>
+                    {% else %}
+                        <a href="{% url 'edit_lulu_story' pk=post.pk %}"><i class="fa fa-pencil fa-fw"></i>Edytuj</a>
+                        <a href="{% url 'delete_lulu_story' pk=post.pk %}"><i class="fa fa-trash-o fa-fw"></i>Usuń</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h3 class="header-no">Brak postów na Twoim profilu!<br>Musisz napisać jakąś story.<br>Lulu nie będzie czekać w nieskończoność!</h3>
+    {% endif %}
+<br><br><br><br><br>
+
+{% endblock %}

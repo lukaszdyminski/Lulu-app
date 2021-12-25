@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - Potwierdzenie usunięcia{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    {% if user.is_authenticated %}
+        {% if pet_logged_post %}
+            <form class="subsite-description" method="post">
+                {% csrf_token %}
+                <p>Czy naprawdę chcesz usunąć "{{ pet_logged_post.title }}" story?</p>
+                <input class="button" type="submit" value="Potwierdź">
+            </form>
+        {% else %}
+            <form class="subsite-description" method="post">
+                {% csrf_token %}
+                <p>Czy naprawdę chcesz usunąć "{{ lulu_logged_post.title }}" story?</p>
+                <input class="button" type="submit" value="Potwierdź">
+            </form>
+        {% endif %}
+    {% else %}
+        <p><a href="{% url 'login' %}">Zaloguj</a></p>
+    {% endif %}
+
+
+{% endblock %}

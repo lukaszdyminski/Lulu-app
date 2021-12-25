@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="pl" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="Kilka niebanalnych epizodów z życia wiecznie głodnego psa Lulu">
+    <meta name="keywords" content="lulu, miś, jedzenie, pies">
+    <meta name="author" content="Lulu & Luke">
+    <title>Opowieści Lulu - login</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}"/>
+    <link href='http://fonts.googleapis.com/css?family=Fahkwang&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Life+Savers&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+</head>
+
+
+<body class="back-color">
+
+
+    <span class="lulu-login"><a href="{% url 'register_request' %}">Zarejestruj się</a></span>
+
+
+    <div class="searching">
+        <a href="{% url 'show_search' %}"><img src="{% static 'lupa.png' %}" alt="search" width="35" height="35"></a>
+        <form action="{% url 'show_search' %}">
+            {% csrf_token %}
+            <input class="search-form" type="search" placeholder="Wpisz..." name="search">
+            <input class="button" type="submit" value="Szukaj">
+        </form>
+    </div>
+
+
+    <div>
+        <img class="tiny-logo" src="{% static 'lulu the dog.png' %}"
+             alt="Ustawienia Twojej przeglądarki nie pozwalają na wyświetlenie obrazu"
+             width="130" height="85">
+        <h1 class="lulu-title"><b>Opowieści Lulu</b></h1>
+    </div>
+
+
+    {% if user.is_authenticated %}
+        <div class="skew-menu">
+            <ul>
+                <li><a href="{% url 'all_posts_index' %}">Home</a></li>
+                <li><a href="{% url 'create_logged_lulu_story' %}">Napisz Lulu-story</a></li>
+                <li><a href="{% url 'create_logged_pet_story' %}">Napisz Pet-story</a></li>
+                <li><a href="">Spis anegdot</a>
+                    <ul>
+                        <li><a href="{% url 'lulu_posts_list' %}">Opowieści - Lulu</a></li>
+                        <li><a href="{% url 'pet_posts_list' %}">Opowieści - Pet</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="skew-menu">
+            <ul>
+                <li><a href="{% url 'all_posts_index' %}">Home</a></li>
+                <li><a href="{% url 'create_lulu_story' %}">Napisz Lulu-story</a></li>
+                <li><a href="{% url 'create_pet_story' %}">Napisz Pet-story</a></li>
+                <li><a href="">Spis anegdot</a>
+                    <ul>
+                        <li><a href="{% url 'lulu_posts_list' %}">Opowieści - Lulu</a></li>
+                        <li><a href="{% url 'pet_posts_list' %}">Opowieści - Pet</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+    <br><br><br><br>
+
+
+    <div class="subsite-description">
+        <h3>Na tej stronie możesz się zalogować do swojego profilu.<br>W tym celu musisz być zarerejestrowany.</h3>
+    </div>
+
+
+    <div class="lulu-form">
+        <h4>Zaloguj się za pomocą poniższego formularza lub
+            <span class="lulu-register"><a href="{% url 'register_request' %}">zarejestruj się</a>.</span></h4>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="form-error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        <div class="lulu-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <p class="lulu-form">{{ field.label_tag }}</p>
+                <p>{% render_field field class+="name-nick-title" %}</p>
+            {% endfor %}
+            <h4 class="lulu-help-text"><a href="{% url 'password_reset' %}">Nie pamiętasz hasła?</a></h4><br>
+            <button class="button" type="submit">Zaloguj</button>
+            {% for error in form.non_field_errors %}
+                <p class="form-error">{{ error }}</p>
+            {% endfor %}
+        </div>
+    </form>
+    <br><br><br>
+
+
+    {% if user.is_authenticated %}
+        <div class="lulu-navbar">
+            <ul>
+                <li><a href="{% url 'all_posts_index' %}">Home</a></li>
+                <li><a href="{% url 'create_logged_lulu_story' %}">Napisz Lulu-story</a></li>
+                <li><a href="{% url 'create_logged_pet_story' %}">Napisz Pet-story</a></li>
+                <li><a href="">Spis anegdot</a>
+                    <ul>
+                        <li><a href="{% url 'lulu_posts_list' %}">Opowieści - Lulu</a></li>
+                        <li><a href="{% url 'pet_posts_list' %}">Opowieści - Pet</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="lulu-navbar">
+            <ul>
+                <li><a href="{% url 'all_posts_index' %}">Home</a></li>
+                <li><a href="{% url 'create_lulu_story' %}">Napisz Lulu-story</a></li>
+                <li><a href="{% url 'create_pet_story' %}">Napisz Pet-story</a></li>
+                <li><a href="">Spis anegdot</a>
+                    <ul>
+                        <li><a href="{% url 'lulu_posts_list' %}">Opowieści - Lulu</a></li>
+                        <li><a href="{% url 'pet_posts_list' %}">Opowieści - Pet</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+
+</body>
+</html>

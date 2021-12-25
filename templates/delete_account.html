@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - Usuwanie konta{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+{% if user.is_authenticated %}
+    <form class="subsite-description" method="post">
+        {% csrf_token %}
+        <p>Czy naprawdę chcesz usunąć swoje konto?</p>
+        <input class="button" type="submit" value="Potwierdź">
+    </form>
+{% else %}
+    <p><a href="{% url 'login' %}">Zaloguj</a></p>
+{% endif %}
+
+{% endblock %}

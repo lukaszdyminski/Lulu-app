@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html lang="pl" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description"
+          content="Kilka niebanalnych epizodów z życia wiecznie głodnego psa Lulu">
+    <meta name="keywords" content="lulu, miś, jedzenie, pies">
+    <meta name="author" content="Lulu & Luke">
+    <title>Opowieści Lulu</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}"/>
+    <link href='http://fonts.googleapis.com/css?family=Fahkwang&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Life+Savers&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+</head>
+
+
+<body class="back-color">
+
+
+    {% if user.is_authenticated %}
+        <span class="lulu-logout">Witaj, {{ user }} !
+            <span class="dropdown">
+                <a href="{% url 'logout' %}">Wyloguj się</a>
+                <a href="{% url 'password_change_request' %}">Zmień hasło</a>
+                <a href="{% url 'delete_account' user.id %}">Usuń profil</a>
+            </span>
+        </span>
+    {% else %}
+        <span class="lulu-login"><a href="{% url 'login' %}">Zaloguj się</a></span>
+    {% endif %}
+
+
+    {% if user.is_authenticated %}
+        <div class="lulu-login">
+            <span class="search-form-label"><a href="{% url 'dashboard' %}">Powrót do dashboard</a></span>
+        </div>
+    {% endif %}
+
+
+    <div class="searching">
+        <a href="{% url 'show_search' %}"><img src="{% static 'lupa.png' %}" alt="search" width="35" height="35"></a>
+        <form action="{% url 'show_search' %}">
+            {% csrf_token %}
+            <input class="search-form" type="search" placeholder="Wpisz..." name="search">
+            <input class="button" type="submit" value="Szukaj">
+        </form>
+    </div>
+
+
+    {% if user.is_authenticated %}
+        <div class="skew-menu">
+            <ul>
+                <li><a href="{% url 'all_posts_index' %}">Home</a></li>
+                <li><a href="{% url 'create_logged_lulu_story' %}">Napisz Lulu-story</a></li>
+                <li><a href="{% url 'create_logged_pet_story' %}">Napisz Pet-story</a></li>
+                <li><a href="">Spis anegdot</a>
+                    <ul>
+                        <li><a href="{% url 'lulu_posts_list' %}">Opowieści - Lulu</a></li>
+                        <li><a href="{% url 'pet_posts_list' %}">Opowieści - Pet</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="skew-menu">
+            <ul>
+                <li><a href="{% url 'all_posts_index' %}">Home</a></li>
+                <li><a href="{% url 'create_lulu_story' %}">Napisz Lulu-story</a></li>
+                <li><a href="{% url 'create_pet_story' %}">Napisz Pet-story</a></li>
+                <li><a href="">Spis anegdot</a>
+                    <ul>
+                        <li><a href="{% url 'lulu_posts_list' %}">Opowieści - Lulu</a></li>
+                        <li><a href="{% url 'pet_posts_list' %}">Opowieści - Pet</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <p class="form-error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <br><br><br>
+    <div class="logo">
+        <img src="{% static 'lulu the dog.png' %}" alt="Lulu logo"
+             width="280" height="185">
+        <p id="lulu-head"><b>Opowieści Lulu</b></p>
+    </div>
+    <br><br>
+
+
+    <p class="subsite-description"><b><b class="search-display">Gratki !!</b>
+        Ilość dodanych opowieści na dzień <b class="search-display">{% now "j E Y" %}</b> wynosi:
+        <span class="search-display">{{ post_count }}</span></b></p><br>
+
+
+    <div class="subsite-description">
+        <span>
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; pierwsza</a>
+                <a href="?page={{ page_obj.previous_page_number }}">poprzednia</a>
+            {% endif %}
+
+            <span>
+                Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">następna</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">ostatnia &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+
+    {% for post in page_obj.object_list %}
+        <div class="lulu-pics">
+            {% if post.lulu_pic %}
+                <a href="{{ post.get_absolute_url }}"><img src="{{ post.lulu_pic.url }}" width="480"
+                                                        height="340"
+                                                        alt="Story {{ post.index }}"></a>
+            {% else %}
+                <a href="{{ post.get_absolute_url }}"><img src="{% static 'no_pic.jpg' %}" width="480"
+                                                        height="340"
+                                                        alt="Story {{ post.index }}"></a>
+            {% endif %}
+            {% if post.user %}
+                {% if post.user == request.user %}
+                    <p class="subsite-description"><small>dodany:</small> <b>{{ post.publ_date }}</b>
+                    <span><small>autor:</small> <a href="{% url 'user_posts_list' user=post.user %}"
+                                                   title="Tu możesz sprawdzić wszystkie teksty tego autora">
+                                <b>{{ post.user }}</b></a></span></p>
+                {% else %}
+                    <p class="subsite-description"><small>dodany:</small> <b>{{ post.publ_date }}</b>
+                    <span><small>autor:</small> <a href="{% url 'anonymous_user_posts_list' user_id=post.user_id %}"
+                                                   title="Tu możesz sprawdzić wszystkie teksty tego autora">
+                                <b>{{ post.user }}</b></a></span></p>
+                {% endif %}
+            {% else %}
+                <p class="subsite-description"><small>dodany:</small> <b>{{ post.publ_date }}</b>
+                <span><small>autor:</small> <a href="{% url 'author_posts_list' author=post.author %}"
+                                               title="Tu możesz sprawdzić wszystkie teksty tego autora">
+                    <b>{{ post.author }}</b></a></span></p>
+            {% endif %}
+            <p class="story-title">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a></p>
+            <span class="story-slug">
+                <a href="{{ post.get_absolute_url }}">"{{ post.content|truncatewords:18 }}"</a>
+            </span>
+        </div>
+        <div class="separator">
+            <img src="{% static 'separator_psi.gif' %}" alt="Lulu Separator" width="280" height="130">
+        </div>
+    {% endfor %}
+
+
+    <div class="subsite-description">
+        <span>
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; pierwsza</a>
+                <a href="?page={{ page_obj.previous_page_number }}">poprzednia</a>
+            {% endif %}
+
+            <span>
+                Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">następna</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">ostatnia &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+
+    <br>
+    {% if user.is_authenticated %}
+        <div class="lulu-navbar">
+            <ul>
+                <li><a href="{% url 'all_posts_index' %}">Home</a></li>
+                <li><a href="{% url 'create_logged_lulu_story' %}">Napisz Lulu-story</a></li>
+                <li><a href="{% url 'create_logged_pet_story' %}">Napisz Pet-story</a></li>
+                <li><a href="">Spis anegdot</a>
+                    <ul>
+                        <li><a href="{% url 'lulu_posts_list' %}">Opowieści - Lulu</a></li>
+                        <li><a href="{% url 'pet_posts_list' %}">Opowieści - Pet</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="lulu-navbar">
+            <ul>
+                <li><a href="{% url 'all_posts_index' %}">Home</a></li>
+                <li><a href="{% url 'create_lulu_story' %}">Napisz Lulu-story</a></li>
+                <li><a href="{% url 'create_pet_story' %}">Napisz Pet-story</a></li>
+                <li><a href="">Spis anegdot</a>
+                    <ul>
+                        <li><a href="{% url 'lulu_posts_list' %}">Opowieści - Lulu</a></li>
+                        <li><a href="{% url 'pet_posts_list' %}">Opowieści - Pet</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+</body>
+</html>

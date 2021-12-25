@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - Wyszukiwanie{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    <div class="subsite-description">
+        <h3>Wyniki wyszukiwania dla: "<span class="search-display">{{ search_post }}</span>"</h3>
+        <h5>Liczba wyświetlonych wyników: <span class="search-display">{{ posts_count }}</span></h5>
+        {% for post in posts %}
+            {% if post.user %}
+                {% if post.title %}
+                    <h4 class="stories-list"><a href="{{ post.get_absolute_url }}">
+                    {{ forloop.counter }}. "{{ post.title }}" -- opublikowana przez:
+                    "{{ post.user }}" -- dnia: {{ post.publ_date }}</a></h4>
+                {% else %}
+                    <h4 class="stories-list"><a href="{{ post.get_absolute_url }}">
+                    {{ forloop.counter }}. Komentarz do "{{ post.post.title }}" opublikowany przez:
+                    "{{ post.user }}" -- dnia: {{ post.publ_date }}</a></h4>
+                {% endif %}
+            {% else %}
+                <h4 class="stories-list"><a href="{{ post.get_absolute_url }}">
+                {{ forloop.counter }}. "{{ post.title }}" -- opublikowana przez:
+                "{{ post.author }}" -- dnia: {{ post.publ_date }}</a></h4>
+            {% endif %}
+        {% empty %}
+            <h4>Lulu nie znalazła żadnych wyników wyszukiwania. Spróbuj z inną frazą!</h4>
+        {% endfor %}
+    </div>
+    <br><br><br>
+
+{% endblock %}

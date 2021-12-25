@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - spis anegdot - Lulu{% endblock %}
+
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{{ lulu_posts_list.form.media }}
+
+<div class="container">
+    <div class="story-header">
+        <h3>Spis anegdot o Lulu</h3>
+    </div>
+    <br><br>
+
+    <div class="pic-caption">
+        <figure>
+        <img class="small-lulu-pics" src="{% static 'lulu is waiting.jpg' %}" alt="Lulu is waiting..."
+             width="320" height="220">
+            <figcaption><b>Ile jamnik może czekać na nowe historie?!</b></figcaption>
+        </figure>
+    </div>
+    <div class="subsite-description">
+        <p>Uwaga, Uwaga !!!</p>
+        <b>Poniżej lista opowieści, których bohaterką jest Lulu.<br>Znajdują się tu także Wasze historie.<br>
+        Bez nich ta lista nigdy nie będzie kompletna.<br>Piszcie bez wytchnienia - Lulu, Prawdziwy Miś i
+        Bogumiś cały czas czekają na nową story!<br>Aby napisać nową opowieść, wystarczy wejść
+            {% if user.is_authenticated %}
+                <a href="{% url 'create_logged_lulu_story' %}">TUTAJ</a>.</b>
+            {% else %}
+                <a href="{% url 'create_lulu_story' %}">TUTAJ</a>.
+            {% endif %}
+    </div>
+</div>
+
+<div class="container">
+    <form method="get" action="#pet_search_list">
+        <div class="form-row">
+            {% for field in lulu_posts_list.form %}
+                <div class="col">
+                    <label class="search-form-label">{{ field.label_tag }}</label>
+                    <div class="form-group">{% render_field field class+="form-control form-control-sm" %}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <input class="button" type="submit" value="Szukaj">
+    </form>
+</div>
+<br><br>
+
+
+<div class="container">
+    <a id="pet_search_list">{% for obj in lulu_qs %}</a>
+    <div class="stories-list">
+        {% if obj.user %}
+            <a href="{{ obj.get_absolute_url }}">
+                {{forloop.counter}}. "{{ obj.title|upper }}" -- autor: {{ obj.user|upper }} -- {{ obj.publ_date }}
+            </a><br>
+        {% else %}
+            <a href="{{ obj.get_absolute_url }}">
+            {{forloop.counter}}. "{{ obj.title|upper }}" -- autor: {{ obj.author|upper }} -- {{ obj.publ_date }}
+            </a><br>
+        {% endif %}
+    </div>
+    {% empty %}
+    <h4 class="subsite-description">Lulu nie znalazła żadnych wyników wyszukiwania dla podanych kryteriów!</h4>
+    {% endfor %}
+</div>
+<br><br><br><br>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Lulu Stories - Lista wg gatunku zwierzaka{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    <br>
+    {% if object_list %}
+        {% for a in object_list|slice:":1" %}
+            <div class="subsite-description">
+                <h3 class="">Lista pozycji z gatunkiem zwierzaka: "<span class="search-display">{{ a.pet_species }}</span>"
+                    zawiera <span class="search-display">{{ object_list | length }}</span>
+                    opowieś{{ object_list | length | pluralize:"ć,ci" }}.</h3>
+            </div>
+        {% endfor %}
+        {% for pet in object_list %}
+            <div class="stories-list">
+                {% if pet.user %}
+                    <p>{{ forloop.counter }}. <a href="{{ pet.get_absolute_url }}">
+                        "{{ pet.title|upper}}" --- napisana przez: {{ pet.user|upper }} ---
+                        opublikowana dnia {{ pet.publ_date }}</a></p>
+                {% else %}
+                    <p>{{ forloop.counter }}. <a href="{{ pet.get_absolute_url }}">
+                        "{{ pet.title|upper}}" --- napisana przez: {{ pet.author|upper }} ---
+                        opublikowana dnia {{ pet.publ_date }}</a></p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <h2 class="subsite-description">Brak pozycji na liście.</h2>
+    {% endif %}
+    <br><br><br>
+
+
+{% endblock %}

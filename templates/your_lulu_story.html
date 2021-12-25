@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - Twoja Lulu-story!{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    <div class="story-header">
+        <h3>Napisz Lulu-story</h3>
+    </div>
+    <br>
+
+
+    <div class="pic-caption">
+        <figure>
+            <img class="small-lulu-pics" src="{% static 'lulu_accepts_story.jpg' %}" alt="Lulu story accepted"
+                 width="320" height="220">
+            <figcaption><b>Ale story! Propsy, ziomuś!</b></figcaption>
+        </figure>
+    </div>
+    {% if lulu_form.errors %}
+        <p class="form-error">Formularz zawiera błędy! Lulu prosi o korektę!</p>
+    {% endif %}
+    <br>
+    <div class="subsite-description">
+        <b>Poniżej możesz dodać swoją opowieść o Lulu.<br>Wystarczy skorzystać z prostego formularza.<br>
+            Wpisz jedynie swoje imię lub swój nick,<br>zatytułuj swoją story, wpisz ją lub wklej
+            przygotowany przez siebie tekst, a następnie naciśnij "Wyślij".<br>
+            Twoją anegdotę przeczytamy Lulu i, jeśli się jej spodoba, dodamy na stronie "Opowieści Lulu - Spis anegdot".<br>
+            Pamiętaj, Lulu nie osądza! Lulu po prostu chce się dobrze bawić!</b>
+        <p>Miłej zabawy !!!</p>
+    </div>
+
+
+    <div class="lulu-form">
+        <form method="post">
+            {% csrf_token %}
+            {% if lulu_form.errors %}
+                {% for field in lulu_form %}
+                    {% for error in field.errors %}
+                        <div class="form-error">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                   {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="form-error">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <label>Autor:</label>
+            <p>{{ lulu_form.lulu_form_sender }}</p><br>
+            <label>Tytuł:</label>
+            <p>{{ lulu_form.lulu_form_title }}</p><br>
+            <label>Lulu Story:</label>
+            <p>{{ lulu_form.lulu_form_content }}</p><br>
+            <label>Adres e-mail:</label>
+            <p>{{ lulu_form.lulu_form_mail }}</p><br>
+            <input class="button" type="submit" value="Wyślij">
+        </form>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="form-error">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <br><br><br>
+
+{% endblock %}

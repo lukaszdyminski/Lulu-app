@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści o Lulu{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <p class="date-number">
+        <b>Lulu Story # {{ lulu_single_post.id }}<br><small>dodana: {{ lulu_single_post.publ_date }}</small></b>
+    </p>
+    <br><br>
+
+
+    {% if lulu_single_post.user == request.user %}
+        <div class="post-content-edit-delete">
+            <a href="{% url 'edit_lulu_story' pk=lulu_single_post.pk %}"><i class="fa fa-pencil fa-fw"></i>Edytuj</a>
+            <a href="{% url 'delete_lulu_story' pk=lulu_single_post.pk %}"><i class="fa fa-trash-o fa-fw"></i>Usuń</a>
+        </div>
+    {% endif %}
+
+
+    <div class="story-header">
+        <p>"{{ lulu_single_post.title }}"</p>
+        {% if lulu_single_post.author %}
+            <p><small><small>Autor:</small><a href="{% url 'author_posts_list' author=lulu_single_post.author %}"
+                                              title="Tu możesz sprawdzić wszystkie teksty tego autora">
+                {{ lulu_single_post.author }}</a></small></p>
+        {% else %}
+            {% if lulu_single_post.user == request.user %}
+                <p><small><small>Autor:</small><a href="{% url 'user_posts_list' user=lulu_single_post.user %}"
+                                                  title="Tu możesz sprawdzić wszystkie teksty tego autora">
+                    {{ lulu_single_post.user }}</a></small></p>
+            {% else %}
+                <p><small><small>Autor:</small><a href="{% url 'anonymous_user_posts_list' user_id=lulu_single_post.user_id %}"
+                                                  title="Tu możesz sprawdzić wszystkie teksty tego autora">
+                    {{ lulu_single_post.user }}</a></small></p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+
+    <div class="pic-caption">
+        <figure>
+            {% if lulu_single_post.lulu_pic %}
+                <img class="small-lulu-pics" src="{{ lulu_single_post.lulu_pic.url }}" alt="Story {{ lulu_single_post.id }}"
+                     width="320" height="220">
+            {% else %}
+                <img class="small-lulu-pics" src="{% static 'no_pic.jpg' %}" alt="Story {{ lulu_single_post.id }}"
+                 width="320" height="220">
+            {% endif %}
+            {% if lulu_single_post.pic_caption %}
+                <figcaption><b>{{ lulu_single_post.pic_caption }}</b></figcaption>
+            {% else %}
+                <figcaption><b>*** No Pic-uś ***</b></figcaption>
+            {% endif %}
+        </figure>
+    </div>
+    <p class="lulu-stories">
+        <b>{{ lulu_single_post.content|linebreaksbr }}</b>
+    </p>
+
+    <div class="story-header">
+        <a href="{% url 'add_comment_to_lulu_post' pk=lulu_single_post.pk %}">Dodaj komentarz / ocenę
+                                                                            ({{ lulu_single_post.comments.count }}) :</a>
+    </div>
+    <br><br>
+
+    {% for comment in lulu_single_post.comments.all %}
+        <div>
+            {% if comment.content %}
+                <p class="subsite-description">
+                    Komentarz / Ocena nr <span class="search-display">{{ forloop.revcounter }}</span>
+                    dodany przez <span class="search-display">"{{ comment.user }}"</span>
+                    dnia <span class="search-display">{{ comment.publ_date }}</span>
+                </p>
+                    <div class="comment">{{ comment.content|linebreaks }}</div><br>
+                {% if comment.user == request.user %}
+                        <div class="post-edit-delete">
+                            <a href="{% url 'delete_lulu_post_comment' pk=comment.pk %}"><i class="fa fa-trash-o fa-fw">
+                            </i>Usuń</a>
+                        </div>
+                    {% endif %}
+                    <div class="subsite-description"><small>Wystawiona ocena: <span class="search-display">
+                                                    {{ comment.rate }}</span></small></div>
+            {% else %}
+                <p class="subsite-description">
+                    Ocena nr <span class="search-display">{{ forloop.revcounter }}</span>
+                    dodana przez <span class="search-display">"{{ comment.user }}"</span>
+                    dnia <span class="search-display">{{ comment.publ_date }}</span>
+                </p>
+                    <span class="subsite-description"><small>Brak komentarza. Wystawiona ocena: <span class="search-display">
+                                                    {{ comment.rate }}</span></small></span>
+                {% if comment.user == request.user %}
+                    <div class="post-edit-delete">
+                        <a href="{% url 'delete_lulu_post_comment' pk=comment.pk %}"><i class="fa fa-trash-o fa-fw">
+                        </i>Usuń</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="separator">
+            <img src="{% static 'separator_psi.gif' %}" alt="Lulu Separator" width="180" height="80">
+        </div>
+    {% empty %}
+        <p class="subsite-description">Lulu jeszcze nie znalazła żadnych komentarzy.</p>
+    {% endfor %}
+
+{% endblock %}

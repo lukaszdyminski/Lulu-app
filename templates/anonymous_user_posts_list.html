@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Lista wg autora{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    <br>
+    {% if object_list %}
+        {% for username in object_list|slice:":1" %}
+            <div class="subsite-description">
+                <h3 class="">Autor "<span class="search-display">{{ username.user }}</span>"
+                    popełnił <span class="search-display">{{ object_list | length }}</span>
+                    opowieś{{ object_list | length | pluralize:"ć,ci" }}.</h3>
+            </div>
+        {% endfor %}
+        {% for post in object_list %}
+            <div class="stories-list">
+                {% if post.pet_name %}
+                    <p>{{ forloop.counter }}. <a href="{{ post.get_absolute_url }}">
+                        "{{ post.title|upper }}" --- imię zwierzaka: {{ post.pet_name|upper }} ---
+                        opublikowana dnia {{ post.publ_date }}</a></p>
+                {% else %}
+                    <p>{{ forloop.counter }}. <a href="{{ post.get_absolute_url }}">
+                        "{{ post.title|upper }}" --- imię zwierzaka: LULU ---
+                        opublikowana dnia {{ post.publ_date }}</a></p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <h2>Brak pozycji na liście.</h2>
+    {% endif %}
+    <br><br><br>
+
+
+{% endblock %}

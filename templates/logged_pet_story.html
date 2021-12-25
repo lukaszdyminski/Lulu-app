@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - napisz o swoim psie{% endblock %}
+
+{% block content %}
+{% load static %}
+    {% if pet_logged_form.errors %}
+        <p class="form-error">Formularz zawiera błędy! Lulu prosi o korektę!</p>
+    {% endif %}
+
+
+    <form enctype="multipart/form-data" method="post">
+        <div class="lulu-form">
+            {% csrf_token %}
+            {% if pet_logged_form.errors %}
+                {% for field in pet_logged_form %}
+                    {% for error in field.errors %}
+                        <div class="form-error">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                   {% endfor %}
+                {% endfor %}
+                {% for error in pet_logged_form.non_field_errors %}
+                    <div class="form-error">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}<br>
+            <label>Tytuł:</label>
+            <p>{{ pet_logged_form.title }}</p><br>
+            <label>Imię zwierzaka:</label>
+            <p>{{ pet_logged_form.pet_name }}</p><br>
+            <p><label>Wybierz gatunek zwierzaka:</label></p>
+                {% for radio in pet_logged_form.pet_species %}
+                    <div>
+                        {{ radio }}
+                    </div>
+                {% endfor %}
+            <label>Jaki ?:</label>{{ pet_logged_form.pet_species_other }}<br><br><br>
+            <label>Twoja opowieść:</label>
+            <p>{{ pet_logged_form.content }}</p><br>
+            <label>Zdjęcie zwierzaka <small>(opcjonalnie)</small>:</label>
+            <p>{{ pet_logged_form.lulu_pic }}</p><br>
+            <label>Podpis pod zdjęciem <small>(opcjonalnie)</small>:</label>
+            <p>{{ pet_logged_form.pic_caption }}</p><br>
+            <input class="button" type="submit" value="Wyślij">
+        </div>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="form-error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <br><br><br>
+
+{% endblock %}

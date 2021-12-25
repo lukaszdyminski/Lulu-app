@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści o Lulu - dodaj komentarz{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <h1 class="subsite-description">Dodajesz komentarz do story: <span class="search-display">
+                                        "{{ lulu_post.title }}"</span> jako <span class="search-display">
+                                        "{{ request.user }}"</span> :</h1>
+    <form method="POST">
+        <div class="lulu-form">
+            {% csrf_token %}
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="form-error">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                   {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="form-error">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <label>Komentarz <small>(opcjonalnie)</small>:</label>
+            <p>{{ form.content }}</p><br>
+            <p><label>Twoja ocena:</label></p>
+            {% for radio in form.rate %}
+                <div>
+                    {{ radio }}
+                </div>
+            {% endfor %}
+            <br>
+            <p><input class="button" type="submit" value="Dodaj komentarz"></p>
+        </div>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="form-error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <br>
+
+
+{% endblock %}

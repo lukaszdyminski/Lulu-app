@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - Twój profil{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    <form method="post">
+        <div class="lulu-form">
+            {% csrf_token %}
+            {% if lulu_logged_form.errors %}
+                {% for field in lulu_logged_form %}
+                    {% for error in field.errors %}
+                        <div class="form-error">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                   {% endfor %}
+                {% endfor %}
+                {% for error in logged_form_form.non_field_errors %}
+                    <div class="form-error">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}<br>
+            <label>Tytuł:</label>
+            <p>{{ lulu_logged_form.title }}</p><br>
+            <label>Lulu story:</label>
+            <p>{{ lulu_logged_form.content }}</p><br>
+            <input class="button" type="submit" value="Wyślij">
+        </div>
+    </form>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="form-error">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock %}
