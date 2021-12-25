@@ -17,8 +17,13 @@
 
 
     <div class="subsite-description">
-        <h4>Możesz napisać swoją opowieść o Lulu <a href="{% url 'create_logged_lulu_story' %}">TUTAJ</a>.</h4>
-        <h4>Możesz napisać opowieść o swoim zwierzaku <a href="{% url 'create_logged_pet_story' %}">TUTAJ</a>.</h4>
+        <h4>Możesz napisać nową opowieść o Lulu <a href="{% url 'create_logged_lulu_story' %}">TUTAJ</a>.</h4>
+        <h4>Możesz napisać nową opowieść o swoim zwierzaku <a href="{% url 'create_logged_pet_story' %}">TUTAJ</a>.</h4>
+    </div><br>
+
+
+    <div class="subsite-description">
+        <h5>Poniżej znajduje się lista postów stworzonych przez Ciebie, <b class="search-display">{{ user }}</b>.</h5>
     </div>
 
 
