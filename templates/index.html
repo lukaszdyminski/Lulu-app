@@ -129,18 +129,21 @@
             {% endif %}
             {% if post.user %}
                 {% if post.user == request.user %}
-                    <p class="subsite-description"><small>dodany:</small> <b>{{ post.publ_date }}</b>
+            <p class="subsite-description">Story #<b class="search-display">{{ forloop.revcounter }}
+                    </b> <small>dodana:</small> <b>{{ post.publ_date }}</b>
                     <span><small>autor:</small> <a href="{% url 'user_posts_list' user=post.user %}"
                                                    title="Tu możesz sprawdzić wszystkie teksty tego autora">
                                 <b>{{ post.user }}</b></a></span></p>
                 {% else %}
-                    <p class="subsite-description"><small>dodany:</small> <b>{{ post.publ_date }}</b>
+            <p class="subsite-description">Story #<b class="search-display">{{ forloop.revcounter }}
+                    </b> <small>dodana:</small> <b>{{ post.publ_date }}</b>
                     <span><small>autor:</small> <a href="{% url 'anonymous_user_posts_list' user_id=post.user_id %}"
                                                    title="Tu możesz sprawdzić wszystkie teksty tego autora">
                                 <b>{{ post.user }}</b></a></span></p>
                 {% endif %}
             {% else %}
-                <p class="subsite-description"><small>dodany:</small> <b>{{ post.publ_date }}</b>
+            <p class="subsite-description">Story #<b class="search-display">{{ forloop.revcounter }}
+                </b> <small>dodana:</small> <b>{{ post.publ_date }}</b>
                 <span><small>autor:</small> <a href="{% url 'author_posts_list' author=post.author %}"
                                                title="Tu możesz sprawdzić wszystkie teksty tego autora">
                     <b>{{ post.author }}</b></a></span></p>

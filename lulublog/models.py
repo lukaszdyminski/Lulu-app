@@ -8,7 +8,6 @@ from django.urls import reverse
 
 
 class LuluPost(models.Model):
-    index = models.PositiveIntegerField(verbose_name='Indeks', null=False, blank=False, default=1)
     author = models.CharField(max_length=40, verbose_name='Autor', null=True, blank=True)
     title = models.CharField(max_length=60, verbose_name='Tytuł')
     content = models.TextField(verbose_name='Twój Post')
@@ -23,10 +22,10 @@ class LuluPost(models.Model):
 
     def __str__(self):
         if self.user:
-            return 'Lulu story #{} -- titled "{}" -- posted on {} -- by {}'.format(str(self.index), self.title,
+            return 'Lulu story #{} -- titled "{}" -- posted on {} -- by {}'.format(str(self.id), self.title,
                                                                                str(self.publ_date), self.user)
         else:
-            return 'Lulu story #{} -- titled "{}" -- posted on {} -- by {}'.format(str(self.index), self.title,
+            return 'Lulu story #{} -- titled "{}" -- posted on {} -- by {}'.format(str(self.id), self.title,
                                                                                str(self.publ_date), self.author)
 
 
@@ -47,7 +46,6 @@ PET_SPECIES_CHOICES = (
 
 
 class PetPost(models.Model):
-    index = models.PositiveIntegerField(verbose_name='Indeks', null=False, blank=False, default=1)
     author = models.CharField(max_length=40, verbose_name='Autor', validators=[validators.MinLengthValidator(limit_value=2,
                                                                                  message='Wpisz przynajmniej 2 znaki'
                                                                                          ' w polu AUTOR.')],
@@ -72,14 +70,14 @@ class PetPost(models.Model):
     def __str__(self):
         if self.user:
             if self.pet_species != 'Inny gatunek':
-                return 'Pet story #{} -- titled "{}" -- about {} {} -- posted on {} -- by {}'.format(str(self.index),
+                return 'Pet story #{} -- titled "{}" -- about {} {} -- posted on {} -- by {}'.format(str(self.id),
                                                                                                          self.title,
                                                                                                          self.pet_name,
                                                                                                          self.pet_species,
                                                                                                          str(self.publ_date),
                                                                                                          self.user)
             else:
-                return 'Pet story #{} -- titled "{}" -- about {} {} -- posted on {} -- by {}'.format(str(self.index),
+                return 'Pet story #{} -- titled "{}" -- about {} {} -- posted on {} -- by {}'.format(str(self.id),
                                                                                                          self.title,
                                                                                                          self.pet_name,
                                                                                                          self.pet_species_other,
@@ -87,14 +85,14 @@ class PetPost(models.Model):
                                                                                                          self.user)
         else:
             if self.pet_species != 'Inny gatunek':
-                return 'Pet story #{} -- titled "{}" -- about {} {} -- posted on {} -- by {}'.format(str(self.index),
+                return 'Pet story #{} -- titled "{}" -- about {} {} -- posted on {} -- by {}'.format(str(self.id),
                                                                                                          self.title,
                                                                                                          self.pet_name,
                                                                                                          self.pet_species,
                                                                                                          str(self.publ_date),
                                                                                                          self.author)
             else:
-                return 'Pet story #{} -- titled "{}" -- about {} {} -- posted on {} -- by {}'.format(str(self.index),
+                return 'Pet story #{} -- titled "{}" -- about {} {} -- posted on {} -- by {}'.format(str(self.id),
                                                                                                          self.title,
                                                                                                          self.pet_name,
                                                                                                          self.pet_species_other,
