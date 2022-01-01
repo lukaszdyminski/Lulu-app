@@ -1,0 +1,1 @@
+web: gunicorn lulusite.wsgi --log-file -
