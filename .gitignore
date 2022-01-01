@@ -1,6 +1,5 @@
 *.idea
 *.sqlite3
 *.pyc
-lulu_media
 __pycache__
 venv
