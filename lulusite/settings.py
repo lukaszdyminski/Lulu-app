@@ -145,8 +145,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'lulu_images')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'lulu_images')
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'dashboard'
@@ -170,3 +170,9 @@ AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
 DEFAULT_FILE_STORAGE = storages.backends.s3boto3.S3Boto3Storage
+
+if AWS_STORAGE_BUCKET_NAME:
+    MEDIA_URL = 's3://lulu-app-bucket/lulu_media/lulu_images/'
+else:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'lulu_images')
