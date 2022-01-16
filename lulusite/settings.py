@@ -146,7 +146,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = 'lulu_images'
+MEDIA_ROOT = 'lulu_media'
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'dashboard'
