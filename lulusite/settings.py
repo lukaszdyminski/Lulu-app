@@ -169,7 +169,7 @@ AWS_STORAGE_BUCKET_NAME = 'lulu-app-bucket'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
-DEFAULT_FILE_STORAGE = storages.backends.s3boto3.S3Boto3Storage
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 if AWS_STORAGE_BUCKET_NAME:
     MEDIA_URL = 'https://lulu-app-bucket.s3.eu-central-1.amazonaws.com/lulu_media/lulu_images/'
