@@ -172,7 +172,7 @@ AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 if AWS_STORAGE_BUCKET_NAME:
-    MEDIA_URL = 'https://lulu-app-bucket.s3.eu-central-1.amazonaws.com/lulu_media/lulu_images/'
+    MEDIA_URL = 'https://lulu-app-bucket.s3.eu-central-1.amazonaws.com/lulu_images/'
 else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = '/lulu_images/'
