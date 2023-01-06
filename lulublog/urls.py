@@ -29,7 +29,7 @@ urlpatterns = [
     path('search_results/', views.show_search, name='show_search'),
         # Search-toolbar results url
     path('author_posts_list/<str:author>/', views.AuthorPostsList.as_view(), name='author_posts_list'),
-        # Particular author stories list url
+        # Particular non-registered author stories list url
     path('user_posts_list/<str:user>/', views.UserPostsList.as_view(), name='user_posts_list'),
         # Particular user stories list url
     path('anonymous_user_posts_list/<int:user_id>/', views.AnonymousUserPostsList.as_view(), name='anonymous_user_posts_list'),

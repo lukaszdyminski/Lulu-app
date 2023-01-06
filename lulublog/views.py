@@ -179,7 +179,7 @@ class UserPostsList(ListView):
         return qs
 
 
-# logged-in particular user all posts list view (all others users excluding logged-in ones); sorted chronologically
+# non-logged-in particular user all posts list view; sorted chronologically
 
 class AnonymousUserPostsList(ListView):
     template_name = 'anonymous_user_posts_list.html'
@@ -193,7 +193,7 @@ class AnonymousUserPostsList(ListView):
         return qs
 
 
-# non-logged-in particular user all posts list view; sorted chronologically
+# non-registered particular author all posts list view; sorted chronologically
 
 class AuthorPostsList(ListView):
     template_name = 'author_posts_list.html'
