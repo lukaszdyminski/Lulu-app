@@ -6,6 +6,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
+''' lulublog lulu-story form written by non-logged-in user;
+form data sent automatically to admin email - ready to verified;
+related to no lulublog model'''
+
+
 class LuluForm(forms.Form):
     lulu_form_sender = forms.CharField(widget=forms.TextInput(attrs={'class': 'name-nick-title',
                                                                      'placeholder': 'Wpisz swoje imię / swój nick...',
@@ -23,6 +28,11 @@ class LuluForm(forms.Form):
     lulu_form_mail = forms.EmailField(widget=forms.TextInput(attrs={'class': 'name-nick-title',
                                                                     'placeholder': 'Wpisz swój adres e-mail...'}),
                                       required=True)
+
+
+'''lulublog pet-story form written by non-logged-in user;
+form data sent automatically to database - no admin verifying procedure;
+related to PetPost model'''
 
 
 class PetForm(ModelForm):
@@ -51,6 +61,10 @@ class PetForm(ModelForm):
                    }
 
 
+'''lulublog user registration form;
+related to generic User model'''
+
+
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()
 
@@ -60,11 +74,18 @@ class RegisterForm(UserCreationForm):
         help_texts = {'username': "Użyj maksymalnie 150 znaków. "
                                   "Możesz wziąć pod uwagę: litery, cyfry oraz znaki: @ . + - _"}
 
+    # user registration class additional function, describing errors with customized text
+
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
         self.fields[
             'password1'].help_text = "Użyj przynajmniej 8 znaków. Twoje hasło nie może składać się z samych cyfr."
         self.fields['email'].help_text = "Adres mailowy przyda się, by potwierdzić rejestrację Twojego profilu."
+
+
+'''lulublog lulu-story form written by logged-in user;
+form data sent automatically to database - no admin verifying procedure;
+related to LuluPost model'''
 
 
 class LoggedLuluForm(ModelForm):
@@ -77,6 +98,11 @@ class LoggedLuluForm(ModelForm):
                    'content': forms.Textarea(attrs={'class': 'textarea',
                                                     'placeholder': 'Proszę, wpisz/wklej swoją story...',
                                                     'rows': 15})}
+
+
+'''lulublog pet-story form written by logged-in user;
+form data sent automatically to database - no admin verifying procedure;
+related to LuluPost model'''
 
 
 class LoggedPetForm(ModelForm):
