@@ -22,6 +22,8 @@ from lulublog import views
 from allauth.account.views import SignupView
 
 
+# registration view class (from django-allauth applications set)
+
 class RegistrationView(SignupView):
     template_name = 'registration/register.html'
 
@@ -31,7 +33,7 @@ urlpatterns = [
     path('lulu_stories/', include('lulublog.urls')),  # lulublog app non-registration urls
     path('login/', auth_views.LoginView.as_view(), name='login'),  # lulublog account login url
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),  # lulublog account logout url
-    path('register/', RegistrationView.as_view(), name="register_request"),  # lulublog account register url
+    path('register/', RegistrationView.as_view(), name="register_request"),  # lulublog account register url (from django-allauth applications set)
     path('password_change/',
          auth_views.PasswordChangeView.as_view(template_name='registration/password-change.html'),
          name='password_change_request'),  # lulublog account password change url
@@ -40,16 +42,16 @@ urlpatterns = [
          name='password_change_done'),  # lulublog account password change success url
     path('password_reset/',
          auth_views.PasswordResetView.as_view(template_name='registration/password-reset-form.html'),
-         name='password_reset'),
+         name='password_reset'),  # lulublog account password reset e-mail form url
     path('password_reset/done/',
          auth_views.PasswordResetDoneView.as_view(template_name='registration/password-reset-done.html'),
-         name='password_reset_done'),
+         name='password_reset_done'),  # lulublog account password reset message url
     path('reset/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(template_name='registration/password-reset-confirm.html'),
-         name='password_reset_confirm'),
+         name='password_reset_confirm'),  # lulublog account password reset new password form url
     path('reset/done/',
          auth_views.PasswordResetCompleteView.as_view(template_name='registration/password-reset-complete.html'),
-         name='password_reset_complete'),
-    path('accounts/', include('allauth.urls'))
+         name='password_reset_complete'),  # lulublog account password reset success message url
+    path('accounts/', include('allauth.urls'))  # lulublog account registration messages urls (from django-allauth applications set)
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
