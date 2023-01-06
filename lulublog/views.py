@@ -15,8 +15,7 @@ from django.db.models import Q
 from .models import *
 
 
-# Create your views here
-
+# all lulu-blog posts view; sorted chronologically; displayed on lulu-blog home url
 
 def all_posts_index(request):
     lulu_post = LuluPost.objects.all()
@@ -31,12 +30,16 @@ def all_posts_index(request):
     return render(request, "index.html", {'post_count': post_count, 'page_obj': page_obj})
 
 
+# list of all posts about Lulu view; sorted chronologically; written by admin and users; with additional search filters
+
 def lulu_posts_list(request):
     lulu_qs = LuluPost.objects.all()
     lulu_filter = LuluFilter(request.GET, queryset=lulu_qs)
     lulu_qs = lulu_filter.qs
     return render(request, 'lulu_posts_list.html', {'lulu_qs': lulu_qs, 'lulu_posts_list': lulu_filter})
 
+
+# list of all posts about other pets view; sorted chronologically; written by users; with additional search filters
 
 def pet_posts_list(request):
     pet_qs = PetPost.objects.all()
@@ -45,10 +48,14 @@ def pet_posts_list(request):
     return render(request, 'pet_posts_list.html', {'pet_qs': pet_qs, 'pet_posts_list': pet_filter})
 
 
+# single post about Lulu view; written by admin or users; showing post content, date, author, picture, users comments
+
 def lulu_single_post(request, pk):
     specific_lulu_post = get_object_or_404(LuluPost, pk=pk)
     return render(request, 'lulu_single_post.html', {'lulu_single_post': specific_lulu_post})
 
+
+# single optional comment of Lulu post form view; available for logged-in users only; with obligatory rate status
 
 @login_required
 def add_comment_to_lulu_post(request, pk):
@@ -66,10 +73,14 @@ def add_comment_to_lulu_post(request, pk):
     return render(request, 'add_comment_to_lulu_post.html', {'form': form, 'lulu_post': lulu_post})
 
 
+# single post about other pet view; written by users; showing post content, date, author, picture, ,pet name and species, users comments
+
 def pet_single_post(request, pk):
     specific_pet_post = get_object_or_404(PetPost, pk=pk)
     return render(request, 'pet_single_post.html', {'pet_single_post': specific_pet_post})
 
+
+# single optional comment of other pet post form view; available for logged-in users only; with obligatory rate status
 
 @login_required
 def add_comment_to_pet_post(request, pk):
@@ -86,6 +97,8 @@ def add_comment_to_pet_post(request, pk):
         form = PetPostCommentForm()
     return render(request, 'add_comment_to_pet_post.html', {'form': form, 'pet_post': pet_post})
 
+
+# Lulu post form view; available for non-logged-in users; form data sent automatically to admin - ready to verified;
 
 def create_lulu_story(request):
     if request.method == 'POST':
@@ -108,6 +121,8 @@ def create_lulu_story(request):
     return render(request, 'your_lulu_story.html', {'lulu_form': lulu_form})
 
 
+# other pet post form view; available for non-logged-in users; form data sent automatically to database - no admin verifying procedure;
+
 def create_pet_story(request):
     if request.method == 'POST':
         pet_form = PetForm(request.POST, request.FILES)
@@ -121,9 +136,13 @@ def create_pet_story(request):
     return render(request, 'your_pet.html', {'pet_form': pet_form})
 
 
+# form sending success message
+
 def display_lulu_thanks(request):
     return render(request, 'lulu_thanks.html', {})
 
+
+# search form results view; displaying chronologically ordered posts list containing given phrase
 
 def show_search(request):
     search_post = request.GET.get('search')
@@ -147,6 +166,8 @@ def show_search(request):
                   {'posts': all_posts, 'search_post': search_post, 'posts_count': all_posts_count})
 
 
+# registered users all posts list view; sorted chronologically
+
 class UserPostsList(ListView):
     template_name = 'user_posts_list.html'
 
@@ -157,6 +178,8 @@ class UserPostsList(ListView):
         qs = sorted(chain(lulu_user_qs, pet_user_qs), key=attrgetter('publ_date'))
         return qs
 
+
+# logged-in particular user all posts list view (all others users excluding logged-in ones); sorted chronologically
 
 class AnonymousUserPostsList(ListView):
     template_name = 'anonymous_user_posts_list.html'
@@ -170,6 +193,8 @@ class AnonymousUserPostsList(ListView):
         return qs
 
 
+# non-logged-in particular user all posts list view; sorted chronologically
+
 class AuthorPostsList(ListView):
     template_name = 'author_posts_list.html'
 
@@ -182,6 +207,8 @@ class AuthorPostsList(ListView):
         return qs
 
 
+# all posts about particular pet list view; sorted chronologically
+
 class PetList(ListView):
     template_name = 'pet_list.html'
     context_object_name = 'pet_list'
@@ -192,6 +219,8 @@ class PetList(ListView):
         return qs
 
 
+# all posts about particular pet species list view; sorted chronologically
+
 class SpeciesList(ListView):
     template_name = 'species_list.html'
     context_object_name = 'species_list'
@@ -201,6 +230,8 @@ class SpeciesList(ListView):
         qs = PetPost.objects.filter(pet_species=species_id)
         return qs
 
+
+# registered user profile delete generic view;
 
 class UserDelete(DeleteView):
     model = User
@@ -213,6 +244,8 @@ class UserDelete(DeleteView):
         return super(UserDelete, self).delete(request, *args, **kwargs)
 
 
+# logged-in user all posts list view; displayed on dashboard url after login; sorted chronologically; with links to posts deleting and editing
+
 @login_required
 def display_dashboard(request):
     current_user = request.user
@@ -221,6 +254,8 @@ def display_dashboard(request):
     all_posts = sorted(chain(user_lulu_posts, user_pet_posts), key=attrgetter('publ_date'))
     return render(request, 'dashboard.html', {'all_posts': all_posts})
 
+
+# Lulu post form view; available for logged-in users; form data sent automatically to database
 
 @login_required
 def create_logged_lulu_story(request):
@@ -238,6 +273,8 @@ def create_logged_lulu_story(request):
     return render(request, 'logged_lulu_story.html', {'lulu_logged_form': lulu_logged_form})
 
 
+# other pet post form view; available for logged-in users; form data sent automatically to database
+
 @login_required
 def create_logged_pet_story(request):
     if request.method == 'POST':
@@ -253,6 +290,8 @@ def create_logged_pet_story(request):
     return render(request, 'logged_pet_story.html', {'pet_logged_form': pet_logged_form})
 
 
+# Lulu post editing form view; available for logged-in users
+
 def edit_lulu_story(request, pk):
     lulu_logged_post = get_object_or_404(LuluPost, pk=pk)
     lulu_logged_form = LoggedLuluForm(request.POST or None, instance=lulu_logged_post)
@@ -261,6 +300,8 @@ def edit_lulu_story(request, pk):
         return redirect('dashboard')
     return render(request, 'logged_lulu_story.html', {'lulu_logged_form': lulu_logged_form})
 
+
+# other pet post editing form view; available for logged-in users
 
 def edit_pet_story(request, pk):
     pet_logged_post = get_object_or_404(PetPost, pk=pk)
@@ -271,6 +312,8 @@ def edit_pet_story(request, pk):
     return render(request, 'logged_pet_story.html', {'pet_logged_form': pet_logged_form})
 
 
+# Lulu post deleting form view; available for logged-in users
+
 def delete_lulu_story(request, pk):
     lulu_logged_post = get_object_or_404(LuluPost, pk=pk)
     if request.method == 'POST':
@@ -279,6 +322,8 @@ def delete_lulu_story(request, pk):
         return redirect('dashboard')
     return render(request, 'delete_confirmation.html', {'lulu_logged_post': lulu_logged_post})
 
+
+# other pet post deleting form view; available for logged-in users
 
 def delete_pet_story(request, pk):
     pet_logged_post = get_object_or_404(PetPost, pk=pk)
@@ -289,6 +334,8 @@ def delete_pet_story(request, pk):
     return render(request, 'delete_confirmation.html', {'pet_logged_post': pet_logged_post})
 
 
+# Lulu post comment deleting form view; available for logged-in users
+
 @login_required
 def delete_lulu_post_comment(request, pk):
     lulu_comment = get_object_or_404(LuluPostComment, pk=pk)
@@ -298,6 +345,8 @@ def delete_lulu_post_comment(request, pk):
         return redirect('dashboard')
     return render(request, 'comment_delete_confirmation.html', {'lulu_comment': lulu_comment})
 
+
+# other pet post comment deleting form view; available for logged-in users
 
 @login_required
 def delete_pet_post_comment(request, pk):
