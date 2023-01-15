@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 
-# Create your models here.
+'''single post about Lulu model; sending to database data such as: author's or user's name, post title, post content,
+Lulu's picture selected by admin, optional picture caption, post publication date'''
 
 
 class LuluPost(models.Model):
@@ -43,6 +44,12 @@ PET_SPECIES_CHOICES = (
     ("Jaszczurka", "Jaszczurka"),
     ("Inny gatunek", "Inny gatunek"),
 )
+
+
+'''single post about other user's pet; sending to database data such as: author's or user's name, author's or user's 
+pet's name, pet's species selected by user from the list PET_SPECIES_CHOICES, post title,
+post content, pet's picture added optionally by user, optional picture caption,
+user's email address, post publication date'''
 
 
 class PetPost(models.Model):
@@ -109,6 +116,11 @@ LULU_RATE_CHOICES = (
 )
 
 
+'''single comment to post about Lulu model, added by logged-in user; related to particular Lulu post;
+sending to database data such as: related post name, user's name, optional comment content, comment publication date,
+obligatory 5 grades rating, with rate chosen from the list LULU_RATE_CHOICES'''
+
+
 class LuluPostComment(models.Model):
     post = models.ForeignKey(LuluPost, on_delete=models.CASCADE, verbose_name='Komentarz', related_name='comments',
                              null=True, blank=True)
@@ -135,6 +147,11 @@ PET_RATE_CHOICES = (
     ("4 **** Lulu pobudzona", " 4 **** LULU POBUDZONA"),
     ("5 ***** Lulu podekscytowana", " 5 ***** LULU PODEKSCYTOWANA"),
 )
+
+
+'''single comment to post about other user's pet model, added by logged-in user; related to particular pet post;
+sending to database data such as: related post name, user's name, optional comment content, comment publication date,
+obligatory 5 grades rating, with rate chosen from the list PET_RATE_CHOICES'''
 
 
 class PetPostComment(models.Model):
