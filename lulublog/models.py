@@ -118,7 +118,7 @@ LULU_RATE_CHOICES = (
 
 '''single comment to post about Lulu model, added by logged-in user; related to particular Lulu post;
 sending to database data such as: related post name, user's name, optional comment content, comment publication date,
-obligatory 5 grades rating, with rate chosen from the list LULU_RATE_CHOICES'''
+obligatory 5 grades rating with rate chosen from the list LULU_RATE_CHOICES'''
 
 
 class LuluPostComment(models.Model):
@@ -151,7 +151,7 @@ PET_RATE_CHOICES = (
 
 '''single comment to post about other user's pet model, added by logged-in user; related to particular pet post;
 sending to database data such as: related post name, user's name, optional comment content, comment publication date,
-obligatory 5 grades rating, with rate chosen from the list PET_RATE_CHOICES'''
+obligatory 5 grades rating with rate chosen from the list PET_RATE_CHOICES'''
 
 
 class PetPostComment(models.Model):
