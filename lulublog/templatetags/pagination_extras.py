@@ -1,5 +1,7 @@
 from django import template
 
+# decorated function enabling the blog posts reverse ordering using pagination
+
 register = template.Library()
 
 
