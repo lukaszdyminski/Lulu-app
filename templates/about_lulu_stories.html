@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Opowieści Lulu - about{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    <div class="story-header">
+        <h3>Czym są "Opowieści Lulu"?<br>
+        To proste jak jej ogonek!</h3>
+    </div>
+    <br><br>
+
+
+    <div class="subsite-description">
+        <b>"Opowieści Lulu" to połączenie bloga i serwisu społecznościowego.
+            Mniej więcej raz w tygodniu (może częściej, może rzadziej - w zależności od kaprysów Lulu)
+            będzie można przeczytać <a href="{% url 'all_posts_index' %}"><strong>TUTAJ</strong></a>
+            krótką, nową historię, ilustrującą pełne niespodzianek życie
+            małej suczki o imieniu Lulu. Historia będzie opatrzona zdjęciem głównej bohaterki.<br><br>
+            Jeśli spodobają Ci się te anegdotki, możesz wczuć się w klimat i napisać swoją story o Lulu
+            <a href="{% url 'create_lulu_story' %}"><strong>W TYM MIEJSCU</strong></a>.
+            Lulu oceni Twoje zdolności literackie i postara się umieścić historię na swoim blogu,
+            dodając zdjęcie nawiązujące mniej lub bardziej do Twojej opowieści.<br><br>
+            Co więcej, <i>last but not least</i>, możesz umieścić
+            <a href="{% url 'create_pet_story' %}"><strong>TUTAJ</strong></a> opowieść o swoim własnym zwierzaku.
+            Jedną lub więcej. Możesz dodać także jego zdjęcia. I na koniec stworzyć o nim całą historię w odcinkach,
+            podobną do tej o Lulu. Albo zupełnie inną!<br><br>Zatem do dzieła!<br><br>P.S. Uwaga! Zarejestrowani
+            użytkownicy mają łatwiej. Mogą np. dodawać komentarze do postów innych autorów i użytkowników.
+            Zarejestrować możesz się <a href="{% url 'register_request' %}"><strong>TUTAJ</strong></a>.
+        </b>
+    </div>
+
+{% endblock %}
