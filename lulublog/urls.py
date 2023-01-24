@@ -56,4 +56,6 @@ urlpatterns = [
         # Logged-in user may delete a Lulu Story comment in here
     path('your_dashboard/delete_pet_comment/<int:pk>/', views.delete_pet_post_comment, name='delete_pet_post_comment'),
         # Logged-in user may delete a Pet Story comment in here
+    path('about_lulu_stories/', views.display_lulu_stories_info, name='lulu_stories_info'),
+        # url with Lulu Stories blog info
 ]

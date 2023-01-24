@@ -356,3 +356,9 @@ def delete_pet_post_comment(request, pk):
         messages.success(request, 'Lulu niechętnie wyraziła zgodę i komentarz został usunięty.')
         return redirect('dashboard')
     return render(request, 'comment_delete_confirmation.html', {'pet_comment': pet_comment})
+
+
+# the page with Lulu Stories blog info
+
+def display_lulu_stories_info(request):
+    return render(request, 'about_lulu_stories.html', {})
